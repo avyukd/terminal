@@ -1,0 +1,324 @@
+{
+    "oil": {
+        "offshore": {
+            "tickers": [
+                "VAL",
+                "TDW",
+                "RIG",
+                "DVD.OL",
+                "DO",
+                "BORR",
+                "SDRL",
+                "NOL.OL",
+                "NE",
+                "SPM.MI"
+            ]
+        },
+        "ofs": {
+            "tickers": [
+                "CET.TO",
+                "NCSM",
+                "CLB",
+                "WFRD",
+                "WFTUF"
+            ]
+        },
+        "ep": {
+            "tickers": [
+                "PBR",
+                "EC",
+                "OXY",
+                "PXT.TO",
+                "PBRA"
+            ]
+        }
+    },
+    "kedm": {
+        "tickers": [
+            "VAL",
+            "TDW"
+        ]
+    },
+    "coal": {
+        "thermal": {
+            "tickers": [
+                "BTU",
+                "CEIX",
+                "WHC.AU",
+                "NHC.AU",
+                "YAL.AU"
+            ]
+        },
+        "met": {
+            "tickers": [
+                "AMR",
+                "ARCH",
+                "HCC",
+                "CKA.AU",
+                "METC",
+                "SMR.AU"
+            ]
+        }
+    },
+    "offshore": {
+        "oil": {
+            "tickers": [
+                "VAL-WT"
+            ]
+        }
+    },
+    "uranium": {
+        "physical": {
+            "tickers": [
+                "U-UN.TO"
+            ]
+        },
+        "major": {
+            "tickers": [
+                "CCJ"
+            ]
+        }
+    },
+    "ags": {
+        "tickers": [
+            "UAN",
+            "MOS",
+            "LXU"
+        ]
+    },
+    "brazil": {
+        "tickers": [
+            "PBR",
+            "VALE",
+            "PBRA"
+        ]
+    },
+    "colombia": {
+        "tickers": [
+            "EC",
+            "PXT.TO"
+        ]
+    },
+    "berkshire": {
+        "tickers": [
+            "OXY"
+        ]
+    },
+    "tin": {
+        "tickers": [
+            "AFM.V",
+            "MLX.AU"
+        ]
+    },
+    "sector": {
+        "oil": {
+            "tickers": [
+                "XLE",
+                "XOP",
+                "OIH",
+                "USO",
+                "BNO"
+            ]
+        },
+        "cannabis": {
+            "tickers": [
+                "MSOS"
+            ]
+        },
+        "brazil": {
+            "tickers": [
+                "EWZ"
+            ]
+        },
+        "tech": {
+            "tickers": [
+                "QQQ",
+                "ARKK"
+            ],
+            "china": {
+                "tickers": [
+                    "KWEB"
+                ]
+            }
+        },
+        "uranium": {
+            "tickers": [
+                "URNM"
+            ]
+        },
+        "gold": {
+            "tickers": [
+                "GLD",
+                "GDXJ",
+                "GDX"
+            ]
+        },
+        "metals": {
+            "tickers": [
+                "PICK"
+            ]
+        },
+        "solar": {
+            "tickers": [
+                "ICLN"
+            ]
+        },
+        "utilities": {
+            "tickers": [
+                "XLU"
+            ]
+        },
+        "financials": {
+            "tickers": [
+                "XLF"
+            ]
+        },
+        "consumer-discretionary": {
+            "tickers": [
+                "XLY"
+            ]
+        },
+        "airlines": {
+            "tickers": [
+                "JETS"
+            ]
+        }
+    },
+    "metals": {
+        "tickers": [
+            "VALE",
+            "FIL.TO"
+        ],
+        "nickel": {
+            "tickers": [
+                "PNRL.V"
+            ]
+        },
+        "copper": {
+            "tickers": [
+                "FCX",
+                "IVN.TO"
+            ]
+        }
+    },
+    "garbage": {
+        "tickers": [
+            "ARKK",
+            "TSLA",
+            "GME",
+            "AMC",
+            "CVNA",
+            "APRN"
+        ]
+    },
+    "tech": {
+        "tickers": [
+            "TSLA"
+        ],
+        "software": {
+            "tickers": [
+                "PLTR"
+            ]
+        },
+        "compute": {
+            "tickers": [
+                "SMCI"
+            ]
+        },
+        "large-cap": {
+            "tickers": [
+                "BABA",
+                "TCEHY"
+            ]
+        },
+        "adtech": {
+            "tickers": [
+                "PUBM",
+                "MGNI",
+                "PERI"
+            ]
+        }
+    },
+    "short-squeeze": {
+        "tickers": [
+            "GME",
+            "AMC",
+            "CVNA",
+            "APRN"
+        ]
+    },
+    "solar": {
+        "tickers": [
+            "FSLR"
+        ]
+    },
+    "office": {
+        "tickers": [
+            "VNO",
+            "FSP",
+            "ONL"
+        ]
+    },
+    "madison": {
+        "tickers": [
+            "FSP",
+            "ONL",
+            "SMCI",
+            "OVID",
+            "GHC",
+            "TBPH"
+        ]
+    },
+    "biotech": {
+        "tickers": [
+            "OVID",
+            "TBPH"
+        ]
+    },
+    "retail": {
+        "tickers": [
+            "RVIC",
+            "JAKK",
+            "KSS",
+            "CATO",
+            "DLA"
+        ]
+    },
+    "media": {
+        "tickers": [
+            "WBD",
+            "PARA"
+        ]
+    },
+    "deathcare": {
+        "tickers": [
+            "CSV"
+        ]
+    },
+    "news": {
+        "tickers": [
+            "LEE",
+            "DALN"
+        ]
+    },
+    "crypto": {
+        "tickers": [
+            "COIN",
+            "SI"
+        ]
+    },
+    "downstream": {
+        "tickers": [
+            "CVI",
+            "PBF",
+            "VTNR",
+            "DK"
+        ]
+    },
+    "china": {
+        "tickers": [
+            "BABA",
+            "TCEHY"
+        ]
+    }
+}
