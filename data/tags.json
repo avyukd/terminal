@@ -20,7 +20,11 @@
                 "NCSM",
                 "CLB",
                 "WFRD",
-                "WFTUF"
+                "WFTUF",
+                "RNGR",
+                "CGG.PA",
+                "WRG.TO",
+                "STEP.TO"
             ]
         },
         "ep": {
@@ -29,7 +33,21 @@
                 "EC",
                 "OXY",
                 "PXT.TO",
-                "PBRA"
+                "PBRA",
+                "SD",
+                "RZE.V",
+                "OBE.TO",
+                "SGY.TO",
+                "MEG.TO",
+                "JOY.TO",
+                "CR.TO",
+                "FEC.TO"
+            ]
+        },
+        "royalty": {
+            "tickers": [
+                "BSM",
+                "MTR"
             ]
         }
     },
@@ -83,7 +101,8 @@
         "tickers": [
             "UAN",
             "MOS",
-            "LXU"
+            "LXU",
+            "NPK.TO"
         ]
     },
     "brazil": {
@@ -96,7 +115,8 @@
     "colombia": {
         "tickers": [
             "EC",
-            "PXT.TO"
+            "PXT.TO",
+            "FEC.TO"
         ]
     },
     "berkshire": {
@@ -182,6 +202,19 @@
             "tickers": [
                 "JETS"
             ]
+        },
+        "crypto": {
+            "tickers": [
+                "BTC-USD.CC"
+            ]
+        },
+        "tickers": [
+            "SPY"
+        ],
+        "biotech": {
+            "tickers": [
+                "XBI"
+            ]
         }
     },
     "metals": {
@@ -208,16 +241,24 @@
             "GME",
             "AMC",
             "CVNA",
-            "APRN"
+            "APRN",
+            "BBBY",
+            "PTON",
+            "NOPE",
+            "CLOV"
         ]
     },
     "tech": {
         "tickers": [
-            "TSLA"
+            "TSLA",
+            "FTCH"
         ],
         "software": {
             "tickers": [
-                "PLTR"
+                "PLTR",
+                "YNDX",
+                "YEXT",
+                "SNOW"
             ]
         },
         "compute": {
@@ -228,7 +269,11 @@
         "large-cap": {
             "tickers": [
                 "BABA",
-                "TCEHY"
+                "TCEHY",
+                "META",
+                "MSFT",
+                "AAPL",
+                "AMZN"
             ]
         },
         "adtech": {
@@ -266,13 +311,16 @@
             "SMCI",
             "OVID",
             "GHC",
-            "TBPH"
+            "TBPH",
+            "STGW",
+            "FEC.TO"
         ]
     },
     "biotech": {
         "tickers": [
             "OVID",
-            "TBPH"
+            "TBPH",
+            "BAYRY"
         ]
     },
     "retail": {
@@ -298,14 +346,28 @@
     "news": {
         "tickers": [
             "LEE",
-            "DALN"
+            "DALN",
+            "GCI"
         ]
     },
     "crypto": {
         "tickers": [
             "COIN",
             "SI"
-        ]
+        ],
+        "coins": {
+            "tickers": [
+                "BTC-USD.CC",
+                "ETH-USD.CC",
+                "0XMR-USD.CC"
+            ]
+        },
+        "miner": {
+            "tickers": [
+                "MARA",
+                "RIOT"
+            ]
+        }
     },
     "downstream": {
         "tickers": [
@@ -319,6 +381,90 @@
         "tickers": [
             "BABA",
             "TCEHY"
+        ]
+    },
+    "consumer-discretionary": {
+        "tickers": [
+            "ULTA"
+        ],
+        "restaurants": {
+            "tickers": [
+                "MCD",
+                "YUM"
+            ]
+        },
+        "hotels": {
+            "tickers": [
+                "HLT",
+                "HCITY.MX"
+            ]
+        }
+    },
+    "telco": {
+        "tickers": [
+            "LUMN",
+            "VEON"
+        ]
+    },
+    "russia": {
+        "tickers": [
+            "VEON"
+        ]
+    },
+    "mexico": {
+        "tickers": [
+            "HCITY.MX"
+        ]
+    },
+    "semis": {
+        "tickers": [
+            "INTC",
+            "AMD",
+            "TSM",
+            "MU",
+            "LRCX",
+            "AMAT",
+            "ACLS"
+        ]
+    },
+    "helium": {
+        "tickers": [
+            "RHC.V"
+        ]
+    },
+    "gold": {
+        "miner": {
+            "tickers": [
+                "CMCL",
+                "ITRG",
+                "NHK.TO",
+                "VG.V",
+                "ARU.V",
+                "EQTY.V"
+            ]
+        }
+    },
+    "pawn": {
+        "tickers": [
+            "FCFS"
+        ]
+    },
+    "guns": {
+        "tickers": [
+            "POWW"
+        ]
+    },
+    "prison": {
+        "tickers": [
+            "GEO",
+            "CXW"
+        ]
+    },
+    "cannabis": {
+        "tickers": [
+            "TLRY",
+            "VRNOF",
+            "GTBIF"
         ]
     }
 }

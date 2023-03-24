@@ -114,14 +114,17 @@ def refresh_live_prices():
 
 def refresh_eod_prices():
     tickers_to_fetch = []
+
+    earliest_date = pd.Timestamp.today()
+
     for fn in os.listdir("data/eod-prices"):
         ticker, date = fn_to_tokens(fn)
         if date < pd.Timestamp.today():
             tickers_to_fetch.append(ticker)
-    
-    # TODO: fix this -- refresh shouldn't just be going back one day lmao...
-    # get one day before today timestamp
-    sd = pd.Timestamp.today() - pd.Timedelta(days=1)
+            earliest_date = min(earliest_date, date)
+
+    # TODO: optimize lookback delta? 
+    sd = earliest_date - pd.Timedelta(days=5)
     eoda = EodPriceAPI()
     new_prices = eoda.get_eod_prices(tickers_to_fetch, start_date=sd)
     
