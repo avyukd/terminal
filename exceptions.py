@@ -6,3 +6,9 @@ class InvalidTickerException(Exception):
 
 class TagPathNotFoundException(Exception):
     pass
+
+class InvalidDirectionString(Exception):
+    pass
+
+class InvalidDataFrameException(Exception):
+    pass

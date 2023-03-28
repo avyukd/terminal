@@ -4,6 +4,8 @@
 import argparse 
 from crud import *
 from views import *
+from signals import *
+from backtest import *
 
 parser = argparse.ArgumentParser(description="Manage your intelligent watchlist.")
 
@@ -22,6 +24,12 @@ parser.add_argument('-f', '--filter', nargs=1, help="Filter by tagstring.")
 parser.add_argument('-hd', '--head', nargs=1, help="Head of view.")
 
 parser.add_argument('-rm', '--remove',nargs="+", help="Remove tickers from your watchlist.")
+
+parser.add_argument('-rd','--ret_dist',nargs="+", 
+                    help="View returns distribution conditioned on price change over a window.\n Usage: <tickers/tagstring> <window_size> <dir: gt, lt, eq> <bound in %> <lookback (optional)>")
+parser.add_argument('-lb', '--lookback', nargs=1, help="Lookback period.")
+parser.add_argument('-b', '--bins', nargs=1, help="Bins for histogram.")
+
 args = parser.parse_args()
 
 if args.add_csv:
@@ -87,3 +95,58 @@ elif args.refresh:
     else:
         print("Usage: LIVE, EOD, or BOTH")
         exit(1)
+elif args.ret_dist:
+    items = args.ret_dist
+    if len(items) != 4:
+        print("Usage: <tickers/tagstring> <window_size> <dir: gt, lt, eq> <bound in %>")
+        exit(1)
+    
+    mdb = MetadataDB()
+    all_tickers = mdb.get_all_tickers()
+
+    ticker_or_tagstr_items = items[0].split(",")
+    flag_tick = False
+    for s in ticker_or_tagstr_items:
+        if s in all_tickers:
+            flag_tick = True
+        if s not in all_tickers and flag_tick:
+            print(f"Unrecognized ticker {s}.")
+            exit(1)
+    if flag_tick:
+        tickers = ticker_or_tagstr_items
+    else:
+        tickers = get_tickers_from_tagstring(items[0])
+    
+    prices = load_eod_prices(tickers)
+    window_size = items[1]
+    direction = items[2]
+    bound = float(items[3])
+    if abs(bound) > 1:
+        print("Bound will be treated as a percentage. For example, 0.05 is 5%.")
+
+    lookback = None
+    if args.lookback:
+        lookback = args.lookback[0]
+    
+    bins = 20
+    if args.bins:
+        bins = int(args.bins[0])
+
+    
+    return_vals = get_return_distribution(tickers, prices, window_size, direction, bound, lookback)
+    print("Number of samples:", len(return_vals))
+    ab0 = sum([1 if x > 0 else 0 for x in return_vals])
+    be0 = sum([1 if x < 0 else 0 for x in return_vals])
+    print(f"Samples above 0: {ab0} ({ab0 / len(return_vals):.2%})")
+    print(f"Samples below 0: {be0} ({be0 / len(return_vals):.2%})")
+    print("Mean:", np.mean(return_vals).round(4))
+    print("Std:", np.std(return_vals).round(4))
+
+    #TODO: figure out how to plot y axis as probabilities rather than counts
+    plot_histogram(return_vals, "Return Distribution", bins)
+
+if __name__ == "__main__":
+    ticker = "BTU"
+    prices = load_eod_prices([ticker])
+    df = rsi_zs(prices[ticker]["close"], 14, 2, 252)
+    print_bt_summary(df, trade_window_days=10, lookback=252*5, hurdle=0)

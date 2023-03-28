@@ -2,6 +2,8 @@ from crud import *
 from data import *
 from tabulate import tabulate
 import numpy as np 
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 default_price_columns = [
     "0d", "1w", "3m", "1y" 
@@ -27,6 +29,19 @@ def print_daily_view(tickers: Optional[list[str]] = None, price_columns: Optiona
 
     if price_columns is None:
         price_columns = default_price_columns
+
+    price_columns = [col.lower() for col in price_columns]
+
+    if "def" in price_columns:
+        price_columns.remove("def")
+        price_columns += default_price_columns
+
+    #TODO: figure out better way to do ytd / other non-day based ranking
+    if "ytd" in price_columns:
+        price_columns.remove("ytd")
+        ytd_days = (datetime.now() - datetime(datetime.now().year, 1, 1)).days
+        ytd_trading_days = (252/365) * ytd_days
+        price_columns.append(f"{ytd_days}d")
 
     # TODO: fix this to use calendar dates
     code_to_days = {'d': 1, 'w' : 5, 'm': 20, 'y': 252}
@@ -70,4 +85,8 @@ def print_daily_view(tickers: Optional[list[str]] = None, price_columns: Optiona
     df = df.head(head) if head is not None else df
     
     print(tabulate(df, headers='keys', tablefmt='psql', showindex=False))
-    
+
+def plot_histogram(vals: list[float], title: str, bins: int = 20):
+    # show probabilities not counts
+    sns.displot(vals, kde=True, bins=bins)
+    plt.show()

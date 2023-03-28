@@ -124,7 +124,7 @@ def refresh_eod_prices():
             earliest_date = min(earliest_date, date)
 
     # TODO: optimize lookback delta? 
-    sd = earliest_date - pd.Timedelta(days=5)
+    sd = earliest_date - pd.Timedelta(days=1)
     eoda = EodPriceAPI()
     new_prices = eoda.get_eod_prices(tickers_to_fetch, start_date=sd)
     
@@ -134,7 +134,7 @@ def refresh_eod_prices():
         old_date_str = curr_prices[ticker].index[-1].strftime("%Y-%m-%d")
         date_str = data.index[-1].strftime("%Y-%m-%d")
         
-        curr_prices[ticker] = pd.concat([curr_prices[ticker][:-1], data], ignore_index=False)
+        curr_prices[ticker] = pd.concat([curr_prices[ticker][curr_prices[ticker].index < sd], data], ignore_index=False)
 
         curr_prices[ticker].to_csv(f"data/eod-prices/{ticker}.{date_str}.csv")
         if old_date_str != date_str:
@@ -150,6 +150,7 @@ def load_eod_prices(tickers: Optional[list[str]] = None) -> dict[str, pd.DataFra
             prices[ticker] = pd.read_csv(f"data/eod-prices/{file}", index_col=0)
             prices[ticker].index = pd.to_datetime(prices[ticker].index)
 
+    # prices are already clean -- no need to clean_adjust
     return prices 
 
 def delete_tickers(tickers: list[str]):
