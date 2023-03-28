@@ -6,6 +6,7 @@ from crud import *
 from views import *
 from signals import *
 from backtest import *
+from params import *
 
 parser = argparse.ArgumentParser(description="Manage your intelligent watchlist.")
 
@@ -26,10 +27,18 @@ parser.add_argument('-hd', '--head', nargs=1, help="Head of view.")
 parser.add_argument('-rm', '--remove',nargs="+", help="Remove tickers from your watchlist.")
 
 parser.add_argument('-rd','--ret_dist',nargs="+", 
-                    help="View returns distribution conditioned on price change over a window.\n Usage: <tickers/tagstring> <window_size> <dir: gt, lt, eq> <bound in %> <lookback (optional)>")
-parser.add_argument('-lb', '--lookback', nargs=1, help="Lookback period.")
+                    help="View returns distribution conditioned on price change over a window.\n Usage: <tickers/tagstring> <window_size> <dir: gt, lt, eq> <bound in %>")
 parser.add_argument('-b', '--bins', nargs=1, help="Bins for histogram.")
 
+parser.add_argument('-vs', '--view_signals', action="store_true", help="View your signals and their arguments.")
+parser.add_argument('-bt', '--backtest', nargs="+", help="Backtest a signal. Usage: <ticker> <signal> <args...>")
+parser.add_argument('-tw', '--trade_window', nargs=1, help="Trade window days used to calculate win rate.")
+parser.add_argument('-hrd', '--hurdle', nargs=1, help="Hurdle rate used to calculate win rate.")
+parser.add_argument('-l', '--log', action="store_true", help="Print the log of the backtest.")
+
+parser.add_argument('-s', '--signals', action="store_true", help="Signals matrix view.")
+# multi-utility
+parser.add_argument('-lb', '--lookback', nargs=1, help="Lookback period.")
 args = parser.parse_args()
 
 if args.add_csv:
@@ -124,6 +133,7 @@ elif args.ret_dist:
     if abs(bound) > 1:
         print("Bound will be treated as a percentage. For example, 0.05 is 5%.")
 
+    #TODO: be consistent about how to treat lookback -- as int or str...
     lookback = None
     if args.lookback:
         lookback = args.lookback[0]
@@ -144,9 +154,37 @@ elif args.ret_dist:
 
     #TODO: figure out how to plot y axis as probabilities rather than counts
     plot_histogram(return_vals, "Return Distribution", bins)
+elif args.view_signals:
+    for k,v in signals_dict.items():
+        print(k, v.__code__.co_varnames[:v.__code__.co_argcount], v.__doc__)
+elif args.backtest:
+    items = args.backtest
+    if len(items) < 2:
+        print("Usage: <ticker> <signal> <args...>")
+        exit(1)
+    ticker = items[0]
+    signal = items[1]
+    func_args = items[2:]
 
-if __name__ == "__main__":
-    ticker = "BTU"
+    if signal not in signals_dict:
+        print("Unrecognized signal.")
+        exit(1)
     prices = load_eod_prices([ticker])
-    df = rsi_zs(prices[ticker]["close"], 14, 2, 252)
-    print_bt_summary(df, trade_window_days=10, lookback=252*5, hurdle=0)
+    df = signals_dict[signal](prices[ticker]["close"], *func_args)
+
+    kwargs = {}
+    if args.trade_window:
+        trade_window_days = int(args.trade_window[0])
+        kwargs["trade_window_days"] = trade_window_days
+    if args.lookback:
+        lookback = int(args.lookback[0])
+        kwargs["lookback"] = lookback
+    if args.hurdle:
+        hurdle = float(args.hurdle[0])
+        kwargs["hurdle"] = hurdle
+    if args.log:
+        kwargs["log"] = True
+    
+    print_bt_summary(df, **kwargs)
+elif args.signals:
+    print_signals_matrix()

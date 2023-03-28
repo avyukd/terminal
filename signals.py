@@ -49,15 +49,42 @@ def get_return_distribution(tickers: list[str], prices: dict, window_size: str, 
 
 def rsi_zs(ts: pd.Series, window_size: int = 14, threshold: float = 2, zs_lookback: int = 252) -> pd.DataFrame:
     """
-    ts is a pandas series indexed by date and containing price data 
-    decreasing window size makes it more sensitive to recent price changes, and thus more likely to trigger a signal
-    threshold is the number of standard deviations away from the mean that the RSI must be to trigger a signal
+    ts is a pandas series indexed by date, likely containing price data
+    window_size is an int representing RSI window
+    threshold is the number of standard deviations above or below to trigger signal
+    zs_lookback is the number of days to look back for z-score calculation
     """
+    window_size = int(window_size)
+    threshold = float(threshold)
+    zs_lookback = int(zs_lookback)
+
     df = pd.DataFrame()
     df["price"] = ts
 
     rsi_ts = get_rsi(ts, window_size)
+
     df["feature"] = get_z_score(rsi_ts, zs_lookback, last=False)
+    df["signal"] = df["feature"].apply(lambda x: -1 if x > threshold else 1 if x < -threshold else 0)
+    
+    return df
+
+def ema_dist_zs(ts: pd.Series, window_size: int = 20, threshold: float = 2, zs_lookback: int = 252) -> pd.DataFrame:
+    """
+    ts is a pandas series indexed by date, likely containing price data
+    window_size is an int representing EMA window
+    threshold is the number of standard deviations above or below to trigger signal
+    zs_lookback is the number of days to look back for z-score calculation
+    """
+    window_size = int(window_size)
+    threshold = float(threshold)
+    zs_lookback = int(zs_lookback)
+
+    df = pd.DataFrame()
+    df["price"] = ts
+    df["ema"] = get_ema(ts, window_size)
+    df["dist"] = df["price"] - df["ema"]
+
+    df["feature"] = get_z_score(df["dist"], zs_lookback, last=False)
     df["signal"] = df["feature"].apply(lambda x: -1 if x > threshold else 1 if x < -threshold else 0)
     
     return df

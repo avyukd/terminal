@@ -10,6 +10,9 @@ def get_moving_avg(ts: pd.Series, window: int):
 def get_rsi(ts: pd.Series, window: int):
     return pta.rsi(ts, period=window)
 
+def get_ema(ts: pd.Series, window: int):
+    return pta.ema(ts, period=window)
+
 def get_z_score(ts: pd.Series, window=None, last=True):
     mean = ts.rolling(window=window).mean()
     std = ts.rolling(window=window).std()

@@ -4,12 +4,16 @@ from tabulate import tabulate
 import numpy as np 
 import matplotlib.pyplot as plt
 import seaborn as sns
+from params import *
 
 default_price_columns = [
     "0d", "1w", "3m", "1y" 
 ]
 
+
 # does live vs. eod price -- should be fixed bc would be 0 after hours unless u change to 1d lookback
+
+# TODO: should I just have one view?? what's the point of having two?
 
 def print_daily_view(tickers: Optional[list[str]] = None, price_columns: Optional[list[str]] = None, 
                      rank_col: Optional[str] = None, rank_order: Optional[str] = None, head: int = None):
@@ -85,6 +89,53 @@ def print_daily_view(tickers: Optional[list[str]] = None, price_columns: Optiona
     df = df.head(head) if head is not None else df
     
     print(tabulate(df, headers='keys', tablefmt='psql', showindex=False))
+
+def print_signals_matrix(tickers: Optional[list[str]] = None):
+    mdb = MetadataDB()
+    if tickers is None:
+        tickers = mdb.get_all_tickers()
+
+    metadata = mdb.get_rows(tickers)
+    prices = load_eod_prices(tickers)
+
+    table = []
+    for row in metadata:
+        view_row = []
+
+        metadata_row = MetadataDB.get_row_from_tuple(row)
+        ticker, tags, price = metadata_row.ticker, metadata_row.tags, metadata_row.price
+
+        # check if price is float
+        try:
+            price = float(price)
+        except:
+            price = np.nan
+
+        view_row += [ticker, tags, price]
+
+        score = 0
+        for signal in default_signals:
+            df = signals_dict[signal](prices[ticker]["close"])
+            res = df["feature"].iloc[-1]
+            score += res
+            view_row.append(res)
+        
+        view_row.append(score)
+    
+        table.append(view_row)
+
+    df = pd.DataFrame(table, columns=["ticker", "tags", "price"] + default_signals + ["score"])
+
+    df = df.sort_values(by="score", ascending=False)
+
+    df["price"] = df["price"].astype(float).map("{:.2f}".format)
+    df["score"] = df["score"].astype(float).map("{:.2f}".format)
+
+    for col in default_signals:
+        df[col] = df[col].astype(float).map("{:.2f}".format)
+
+    print(tabulate(df, headers='keys', tablefmt='psql', showindex=False))
+
 
 def plot_histogram(vals: list[float], title: str, bins: int = 20):
     # show probabilities not counts

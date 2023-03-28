@@ -5,12 +5,13 @@ from scipy.signal import argrelextrema
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import Optional
+from tabulate import tabulate
 
 required_columns = ["price", "feature", "signal"]
 
 #TODO: lookback changed to like time period? like tuple of dates or sm
 #TODO: division by zero errors
-def print_bt_summary(df: pd.DataFrame, trade_window_days: int = 10, lookback: Optional[int] = None, hurdle: float = 0.20):
+def print_bt_summary(df: pd.DataFrame, trade_window_days: int = 10, lookback: Optional[int] = None, hurdle: float = 0.20, log:bool=False):
     # hurdle is hurdle IRR
 
     for col in required_columns:
@@ -77,6 +78,10 @@ def print_bt_summary(df: pd.DataFrame, trade_window_days: int = 10, lookback: Op
     print(f"\tBuy win rate: {buy_win_rate:.4%}")
     print(f"\tSell win rate: {sell_win_rate:.4%}")
     print(f"\tTotal win rate: {win_rate:.4%}")
+
+    if log:
+        #TODO: make this a function
+        print(tabulate(df[abs(df["signal"]) == 1], headers="keys", tablefmt="psql", showindex=False))
 
     df = df.set_index("date")
     df["price"].plot()
